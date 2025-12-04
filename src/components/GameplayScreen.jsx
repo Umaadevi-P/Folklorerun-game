@@ -37,7 +37,7 @@ const GameplayScreen = ({
       'banshee': 'Banshee BG.jpg',
       'aswang': 'Aswang BG.jpg'
     };
-    return `/assets/${encodeURIComponent(bgMap[creature.id] || '')}`;
+    return `${import.meta.env.BASE_URL}assets/${encodeURIComponent(bgMap[creature.id] || '')}`;
   };
 
   // Get creature-specific font
@@ -348,3 +348,4 @@ const GameplayScreen = ({
 };
 
 export default GameplayScreen;
+
