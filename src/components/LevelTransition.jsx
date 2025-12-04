@@ -54,7 +54,7 @@ const LevelTransition = ({ creature, fromLevel, toLevel, onComplete, reducedMoti
       'aswang': 'Aswang BG.jpg'
     };
     const filename = bgFileMap[creature.id] || '';
-    return filename ? `/assets/${encodeURIComponent(filename)}` : '';
+    return filename ? `${import.meta.env.BASE_URL}assets/${encodeURIComponent(filename)}` : '';
   };
 
   // Get creature-specific font
@@ -102,7 +102,7 @@ const LevelTransition = ({ creature, fromLevel, toLevel, onComplete, reducedMoti
         {/* Character image */}
         <div className="character">
           <img 
-            src="/assets/Main%20Character.png" 
+            src="/Folklorerun-game/assets/Main%20Character.png" 
             alt="Main character" 
             className="character-image"
           />
@@ -141,3 +141,4 @@ const LevelTransition = ({ creature, fromLevel, toLevel, onComplete, reducedMoti
 };
 
 export default LevelTransition;
+
