@@ -60,7 +60,7 @@ const CreatureSelection = ({ gameData, onSelectCreature, onExit, reducedMotion =
 
     // Start creature-specific audio
     // Requirement 10.2: Play creature-specific audio when creature is selected
-    const creatureAudio = new Audio(`/assets/${creature.name} audio.mp3`);
+    const creatureAudio = new Audio(`${import.meta.env.BASE_URL}assets/${creature.name} audio.mp3`);
     const playPromise = creatureAudio.play();
     if (playPromise !== undefined) {
       playPromise.catch(err => {
