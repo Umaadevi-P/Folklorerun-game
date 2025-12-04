@@ -132,7 +132,7 @@ function IntroAnimation({ onComplete, reducedMotion = false }) {
           <video
             ref={videoRef}
             className="intro-video"
-            src="/assets/Intro.mp4"
+            src={`${import.meta.env.BASE_URL}assets/Intro.mp4`}
             autoPlay
             muted
             playsInline
@@ -144,7 +144,7 @@ function IntroAnimation({ onComplete, reducedMotion = false }) {
           {/* Synchronized audio */}
           <audio
             ref={audioRef}
-            src="/assets/intro audio.mp3"
+            src={`${import.meta.env.BASE_URL}assets/intro audio.mp3`}
             loop={false}
             aria-label="FOLKLORERUN intro audio"
           />
@@ -164,3 +164,5 @@ function IntroAnimation({ onComplete, reducedMotion = false }) {
 }
 
 export default IntroAnimation;
+
+
