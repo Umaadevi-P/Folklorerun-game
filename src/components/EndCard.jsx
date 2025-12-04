@@ -69,7 +69,7 @@ const EndCard = ({
   // Requirement 15.1: Get creature image path (Aswang uses defeated image for victory)
   const getCreatureImagePath = () => {
     if (outcome === 'victory' && creature.id === 'aswang') {
-      return '/assets/Aswang_defeated.jpg';
+      return `${import.meta.env.BASE_URL}assets/Aswang_defeated.jpg`;
     }
     // Use base creature image for all other cases
     const creatureNameMap = {
@@ -78,7 +78,7 @@ const EndCard = ({
       'aswang': 'Aswang'
     };
     const imageName = creatureNameMap[creature.id] || creature.name;
-    return `/assets/${imageName}.jpg`;
+    return `${import.meta.env.BASE_URL}assets/${imageName}.jpg`;
   };
 
   const creatureImagePath = getCreatureImagePath();
@@ -201,3 +201,4 @@ const EndCard = ({
 };
 
 export default EndCard;
+
