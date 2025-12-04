@@ -56,7 +56,7 @@ const CharacterReveal = ({ creature, onEntranceComplete, onCloseUpComplete, redu
   // Get creature image path
   // Requirement 2.4: Load creature high-res image from /assets/
   // URL encode the name to handle spaces (e.g., "Baba Yaga" -> "Baba%20Yaga")
-  const imagePath = `/assets/${encodeURIComponent(creature.name)}.jpg`;
+  const imagePath = `${import.meta.env.BASE_URL}assets/${encodeURIComponent(creature.name)}.jpg`;
 
   return (
     <div className={`character-reveal ${reducedMotion ? 'reduced-motion' : ''} ${isExiting ? 'exiting' : ''}`}>
@@ -74,3 +74,5 @@ const CharacterReveal = ({ creature, onEntranceComplete, onCloseUpComplete, redu
 };
 
 export default CharacterReveal;
+
+
