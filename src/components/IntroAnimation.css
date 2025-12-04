@@ -1,0 +1,437 @@
+/**
+ * IntroAnimation Component Styles
+ * 
+ * Implements the opening video intro with audio and skip functionality.
+ * Falls back to CSS animation for reduced motion.
+ * 
+ * Video Mode:
+ * 1. Full-screen video with object-fit: cover for 9:16 aspect ratio
+ * 2. Synchronized audio playback
+ * 3. Translucent Skip button (top-right)
+ * 4. Caption "FOLKLORERUN" (bottom-left) with neon stroke
+ * 5. 300ms crossfade transition
+ * 
+ * Reduced Motion Mode:
+ * 1. CSS title animation fallback
+ * 2. Layered fog effects
+ * 3. Static visual alternatives
+ * 
+ * Requirements: 1.1, 1.2, 1.3, 1.4, 1.5
+ */
+
+.intro-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 1000;
+  transition: opacity 300ms ease-out;
+}
+
+.intro-animation.fade-out {
+  opacity: 0;
+}
+
+/**
+ * Full-Screen Video Element
+ * 
+ * Implements Requirement 1.1: Display full-screen video with object-fit: cover for 9:16
+ * 
+ * The video fills the entire viewport while maintaining aspect ratio.
+ * object-fit: cover ensures no letterboxing on different screen sizes.
+ */
+.intro-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+/**
+ * Skip Button - Top Right
+ * 
+ * Implements Requirement 1.3: Display translucent Skip button top-right
+ * 
+ * Translucent button with subtle hover effect.
+ * Positioned with safe spacing for notches and rounded corners.
+ */
+.skip-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  color: #ffffff;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 200ms ease;
+}
+
+.skip-button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: scale(1.05);
+}
+
+.skip-button:active {
+  transform: scale(0.98);
+}
+
+.skip-button:focus-visible {
+  outline: 2px solid #FFB84D;
+  outline-offset: 2px;
+}
+
+/**
+ * Audio Hint - Prompts user to click for audio
+ */
+.audio-hint {
+  position: absolute;
+  bottom: 4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.5rem 1rem;
+  background: rgba(255, 184, 77, 0.2);
+  border: 1px solid rgba(255, 184, 77, 0.5);
+  border-radius: 6px;
+  color: #FFB84D;
+  font-size: 0.875rem;
+  font-weight: 500;
+  z-index: 10;
+  animation: pulse 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/**
+ * Caption - Bottom Left with Neon Stroke
+ * 
+ * Implements Requirement 1.3: Show caption "FOLKLORERUN" bottom-left in Rubik Wet Paint with neon stroke
+ * Implements Requirement 1.5: Fallback to serif font if Rubik Wet Paint fails
+ * 
+ * NOTE: This caption should NOT be visible when video is playing - it's only for fallback
+ * Positioned bottom-left with safe spacing.
+ * Neon stroke effect using text-stroke and text-shadow.
+ */
+.intro-caption {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  font-family: var(--font-intro);
+  font-size: clamp(2rem, 6vw, 4rem);
+  color: #FFB84D;
+  margin: 0;
+  z-index: 10;
+  display: none; /* Hidden by default - only show in reduced motion mode */
+  
+  /* Neon stroke effect */
+  -webkit-text-stroke: 2px #FFB84D;
+  text-stroke: 2px #FFB84D;
+  text-shadow: 
+    0 0 10px rgba(255, 184, 77, 0.8),
+    0 0 20px rgba(255, 184, 77, 0.6),
+    0 0 30px rgba(255, 184, 77, 0.4);
+}
+
+/* Only show caption in reduced motion mode as fallback */
+.intro-animation.reduced-motion .intro-caption {
+  display: block;
+}
+
+/**
+ * Main Title with Stroke Reveal Animation
+ * 
+ * Implements Requirement 1.1: Display "FOLKLORERUN" with Rubik Wet Paint font
+ * Implements Requirement 1.5: Fallback to serif font if Rubik Wet Paint fails
+ * 
+ * Animation Logic (strokeReveal):
+ * - 0-20%: Fade in from transparent with scale up (entrance)
+ * - 20-60%: Hold stroke outline only (dramatic pause)
+ * - 60-100%: Fill with color and add glow (reveal)
+ * 
+ * The animation creates a cinematic "drawing" effect where the title appears
+ * to be sketched out before filling in with glowing amber color.
+ * 
+ * Duration: 2.5 seconds total
+ */
+.intro-title {
+  font-family: var(--font-intro);
+  font-size: clamp(2.5rem, 8vw, 6rem);
+  color: transparent;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+  margin: 0;
+  padding: 0 1rem;
+  
+  /* Stroke effect */
+  -webkit-text-stroke: 2px #FFB84D;
+  text-stroke: 2px #FFB84D;
+  
+  /* Animated stroke reveal */
+  animation: strokeReveal 2.5s ease-in-out forwards;
+}
+
+@keyframes strokeReveal {
+  0% {
+    -webkit-text-stroke: 2px transparent;
+    text-stroke: 2px transparent;
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  20% {
+    -webkit-text-stroke: 2px #FFB84D;
+    text-stroke: 2px #FFB84D;
+    opacity: 1;
+    transform: scale(1);
+  }
+  60% {
+    -webkit-text-stroke: 2px #FFB84D;
+    text-stroke: 2px #FFB84D;
+    color: transparent;
+  }
+  100% {
+    -webkit-text-stroke: 2px #FFB84D;
+    text-stroke: 2px #FFB84D;
+    color: #FFB84D;
+    text-shadow: 
+      0 0 20px rgba(255, 184, 77, 0.8),
+      0 0 40px rgba(255, 184, 77, 0.5),
+      0 0 60px rgba(255, 184, 77, 0.3);
+  }
+}
+
+/**
+ * Layered Fog Effects
+ * 
+ * Implements Requirement 1.2: Render layered fog effects using CSS gradients
+ * 
+ * Three-Layer Strategy:
+ * - Layer 1: Brightest amber fog, slowest movement (20s cycle)
+ * - Layer 2: Medium brown fog, medium speed (25s cycle)
+ * - Layer 3: Lightest fog, fastest movement (30s cycle)
+ * 
+ * Each layer is 200% width to allow smooth horizontal drift without visible edges.
+ * Different animation delays create asynchronous movement for depth perception.
+ * 
+ * The fog creates atmospheric depth and sets the spooky tone for the game.
+ */
+.fog-layer {
+  position: absolute;
+  width: 200%;
+  height: 100%;
+  top: 0;
+  left: -50%;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.fog-layer-1 {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 184, 77, 0.15) 25%,
+    rgba(255, 184, 77, 0.25) 50%,
+    rgba(255, 184, 77, 0.15) 75%,
+    transparent 100%
+  );
+  animation: fogDrift1 20s ease-in-out infinite;
+  z-index: 1;
+}
+
+.fog-layer-2 {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(200, 150, 100, 0.1) 30%,
+    rgba(200, 150, 100, 0.2) 50%,
+    rgba(200, 150, 100, 0.1) 70%,
+    transparent 100%
+  );
+  animation: fogDrift2 25s ease-in-out infinite;
+  animation-delay: -5s;
+  z-index: 2;
+}
+
+.fog-layer-3 {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 200, 120, 0.08) 20%,
+    rgba(255, 200, 120, 0.15) 50%,
+    rgba(255, 200, 120, 0.08) 80%,
+    transparent 100%
+  );
+  animation: fogDrift3 30s ease-in-out infinite;
+  animation-delay: -10s;
+  z-index: 3;
+}
+
+@keyframes fogDrift1 {
+  0%, 100% {
+    transform: translateX(0) translateY(0);
+  }
+  50% {
+    transform: translateX(-20%) translateY(-5%);
+  }
+}
+
+@keyframes fogDrift2 {
+  0%, 100% {
+    transform: translateX(0) translateY(0);
+  }
+  50% {
+    transform: translateX(15%) translateY(5%);
+  }
+}
+
+@keyframes fogDrift3 {
+  0%, 100% {
+    transform: translateX(0) translateY(0);
+  }
+  50% {
+    transform: translateX(-10%) translateY(-3%);
+  }
+}
+
+/**
+ * Particle System for Atmospheric Drift
+ * 
+ * Implements Requirement 1.2: Add particle elements for atmospheric drift
+ * 
+ * Particle Animation Logic (particleDrift):
+ * - Particles start above viewport (top: -10%)
+ * - Fade in during first 10% of animation
+ * - Drift downward with horizontal variation (--drift-x CSS variable)
+ * - Fade out during last 10% of animation
+ * - Complete cycle: 110vh vertical travel
+ * 
+ * Each particle has randomized:
+ * - Starting horizontal position (set in JSX)
+ * - Animation delay (creates staggered effect)
+ * - Animation duration (creates varied speeds)
+ * 
+ * Particles are small (3px) glowing dots that create depth and movement.
+ */
+.particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: radial-gradient(circle, rgba(255, 184, 77, 0.8) 0%, transparent 70%);
+  border-radius: 50%;
+  top: -10%;
+  animation: particleDrift linear infinite;
+  opacity: 0;
+}
+
+@keyframes particleDrift {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(110vh) translateX(calc(var(--drift-x, 0) * 50px));
+    opacity: 0;
+  }
+}
+
+/**
+ * Reduced Motion Alternative - CSS Fallback
+ * 
+ * Implements Requirement 1.5: Keep existing CSS title animation as fallback for reduced motion
+ * Implements Requirement 14.3: Show CSS title animation fallback instead of video intro
+ * 
+ * Accessibility Strategy:
+ * - Replace video with CSS title animation
+ * - Use simple fade-in animation
+ * - Disable fog layer animations (static fog remains for atmosphere)
+ * - Maintain core functionality (title still displays, transition still works)
+ * 
+ * This ensures users with motion sensitivity can still experience the intro
+ * without triggering discomfort, while preserving the essential content.
+ */
+.intro-animation.reduced-motion .intro-title {
+  animation: staticFadeIn 1.5s ease-in forwards;
+}
+
+.intro-animation.reduced-motion .fog-layer {
+  animation: none;
+  opacity: 0.2;
+}
+
+@keyframes staticFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    color: #FFB84D;
+    -webkit-text-stroke: 2px #FFB84D;
+    text-stroke: 2px #FFB84D;
+    text-shadow: 
+      0 0 20px rgba(255, 184, 77, 0.8),
+      0 0 40px rgba(255, 184, 77, 0.5);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .intro-title {
+    font-size: clamp(2rem, 10vw, 4rem);
+    -webkit-text-stroke: 1.5px #FFB84D;
+    text-stroke: 1.5px #FFB84D;
+  }
+  
+  .particle {
+    width: 2px;
+    height: 2px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .intro-title {
+    -webkit-text-stroke: 3px #FFB84D;
+    text-stroke: 3px #FFB84D;
+  }
+}

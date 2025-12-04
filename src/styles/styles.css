@@ -1,0 +1,954 @@
+/**
+ * Google Fonts Import - MUST be at the top (Requirements 18.1, 18.2, 18.3)
+ * 
+ * Creature-specific fonts:
+ * - Asimovian: Baba Yaga (futuristic, mystical) - loaded from local assets below
+ * - Jersey 10: Banshee (pixel, retro)
+ * - Road Rage: Aswang (aggressive, horror)
+ * 
+ * Global fonts:
+ * - Rubik Wet Paint: Intro caption
+ * - Playfair Display: Selection title
+ */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Wet+Paint&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jersey+10&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Road+Rage&display=swap');
+
+/**
+ * Global Styles for FOLKLORERUN
+ * 
+ * This stylesheet implements the visual atmosphere for the game through:
+ * - CSS custom properties for dynamic theming (Requirements 11.4)
+ * - Keyframe animations for fog, particles, and creature effects (Requirements 5.1-5.4)
+ * - Smooth transitions between game states (Requirements 11.5)
+ * - Accessibility features including reduced motion support (Requirements 12.1-12.5)
+ * - Responsive design with mobile-first approach (Requirements 14.3, 14.4)
+ * - High contrast text for readability (Requirements 4.5)
+ */
+
+/**
+ * Local Font Declaration (Requirements 18.1)
+ * 
+ * Asimovian font loaded from local assets for Baba Yaga
+ */
+@font-face {
+  font-family: 'Asimovian';
+  src: url('/assets/Asimovian-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Creature-specific fonts (Requirements 18.1, 18.2, 18.3, 18.4) */
+  /* Baba Yaga: Asimovian for futuristic/mystical aesthetic */
+  --font-baba-yaga: 'Asimovian', 'Courier New', monospace;
+  /* Banshee: Jersey 10 for pixel/retro aesthetic */
+  --font-banshee: 'Jersey 10', 'Courier New', monospace;
+  /* Aswang: Road Rage for aggressive/horror feel */
+  --font-aswang: 'Road Rage', 'Impact', sans-serif;
+  /* Global fonts */
+  --font-intro: 'Rubik Wet Paint', 'Georgia', serif;
+  --font-selection: 'Playfair Display', 'Georgia', serif;
+  --font-base: 'Georgia', serif;
+  /* Base colors */
+  --color-bg: #1a1a1a;
+  --color-text: #f0f0f0;
+  
+  /* Creature-specific colors (will be set dynamically) */
+  --creature-primary: #A67CFF;
+  --creature-secondary: #8B5FE6;
+  --creature-fog: rgba(166, 124, 255, 0.22);
+  --creature-particle: #D4B3FF;
+  
+  /* Baba Yaga palette - Neon Purple (Requirements 5.1, 7.1) */
+  --baba-yaga-primary: #A67CFF;
+  --baba-yaga-secondary: #8B5FE6;
+  --baba-yaga-fog: rgba(166, 124, 255, 0.22);
+  --baba-yaga-particle: #D4B3FF;
+  --baba-yaga-fire: #A67CFF;
+  --baba-yaga-glow: 0.8;
+  
+  /* Banshee palette - Pale Blue (Requirements 5.2, 7.2) */
+  --banshee-primary: #CFE8FF;
+  --banshee-secondary: #A8D0F0;
+  --banshee-fog: rgba(207, 232, 255, 0.18);
+  --banshee-particle: #E8F4FF;
+  --banshee-fire: #CFE8FF;
+  --banshee-glow: 0.6;
+  
+  /* Aswang palette - Red Ember (Requirements 5.3, 7.3) */
+  --aswang-primary: #E04B4B;
+  --aswang-secondary: #B83838;
+  --aswang-fog: rgba(224, 75, 75, 0.35);
+  --aswang-particle: #FF6B6B;
+  --aswang-fire: #E04B4B;
+  --aswang-glow: 0.9;
+  
+  /* Animation parameters (will be set dynamically) */
+  --fog-density: 0.3;
+  --particle-count: 20;
+  --animation-intensity: 0.5;
+  --animation-speed: 1;
+  --glow-intensity: 0.8;
+  --vignette-intensity: 0;
+  --distortion-amount: 0;
+  
+  /* Transitions - smooth state changes (Requirements 11.5) */
+  --transition-state: 350ms ease-in-out;
+  --transition-scene: 420ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-choice: 200ms ease-out;
+  --transition-fog: 500ms ease-in-out;
+  --transition-particle: 300ms ease-in;
+  
+  /* Accessibility - focus rings (Requirements 7.1) */
+  --focus-ring-width: 3px;
+  --focus-ring-color: #4A90E2;
+  --focus-ring-offset: 4px;
+  
+  /* Contrast requirements (Requirements 4.5) */
+  --contrast-minimum: 4.5;
+  --text-shadow-contrast: 0 0 8px rgba(0, 0, 0, 0.8);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Georgia', serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/**
+ * 9:16 Portrait Layout (Requirements 16.1, 16.2)
+ * 
+ * Mobile-first design with full-screen canvas on phones.
+ * On desktop, shows centered 9:16 canvas only.
+ * Safe spacing for notches on modern phones.
+ */
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  /* Safe area insets for notches */
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Desktop: Centered 9:16 canvas (Requirements 16.2) */
+@media (min-width: 768px) {
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+  }
+  
+  .app {
+    max-width: 56.25vh; /* 9:16 aspect ratio (9/16 = 0.5625) */
+    width: 100%;
+    height: 100vh;
+    margin: 0 auto;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+    overflow: hidden;
+  }
+  
+  .app--character-reveal,
+  .app--story {
+    max-width: 56.25vh;
+    width: 100%;
+    height: 100vh;
+    margin: 0 auto;
+  }
+}
+
+/**
+ * Fog Animation Keyframes
+ * 
+ * Creates atmospheric fog effects that drift across the screen.
+ * Three layers with different speeds create depth and parallax effect.
+ * Opacity is dynamically controlled by --fog-density variable (Requirements 11.1-11.3).
+ * 
+ * Animation Logic:
+ * - fog-drift-1: Slow horizontal/vertical drift (20s base duration)
+ * - fog-drift-2: Opposite direction drift (25s base duration)
+ * - fog-drift-3: Includes scale transformation for depth (30s base duration)
+ * 
+ * All durations are divided by --animation-speed for dynamic control.
+ */
+@keyframes fog-drift-1 {
+  0% {
+    transform: translateX(0) translateY(0);
+    opacity: calc(var(--fog-density) * 0.8);
+  }
+  50% {
+    transform: translateX(-30px) translateY(-20px);
+    opacity: calc(var(--fog-density) * 1);
+  }
+  100% {
+    transform: translateX(0) translateY(0);
+    opacity: calc(var(--fog-density) * 0.8);
+  }
+}
+
+@keyframes fog-drift-2 {
+  0% {
+    transform: translateX(0) translateY(0);
+    opacity: calc(var(--fog-density) * 0.6);
+  }
+  50% {
+    transform: translateX(40px) translateY(30px);
+    opacity: calc(var(--fog-density) * 0.9);
+  }
+  100% {
+    transform: translateX(0) translateY(0);
+    opacity: calc(var(--fog-density) * 0.6);
+  }
+}
+
+@keyframes fog-drift-3 {
+  0% {
+    transform: translateX(0) translateY(0) scale(1);
+    opacity: calc(var(--fog-density) * 0.7);
+  }
+  50% {
+    transform: translateX(-20px) translateY(40px) scale(1.1);
+    opacity: calc(var(--fog-density) * 1);
+  }
+  100% {
+    transform: translateX(0) translateY(0) scale(1);
+    opacity: calc(var(--fog-density) * 0.7);
+  }
+}
+
+/**
+ * Particle Animation Keyframes
+ * 
+ * Creates floating particle effects that rise from bottom to top of viewport.
+ * Particles fade in/out and scale down as they rise for depth perception.
+ * 
+ * Animation Logic:
+ * - particle-float: Vertical rise with horizontal drift and scale reduction
+ * - particle-drift: Horizontal oscillation for natural movement
+ * - Opacity controlled by --animation-intensity variable
+ * - Duration controlled by --animation-speed variable
+ * 
+ * Requirements: 5.4 (particle system), 5.5 (performance optimization)
+ */
+@keyframes particle-float {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0;
+  }
+  10% {
+    opacity: calc(var(--animation-intensity) * 0.8);
+  }
+  90% {
+    opacity: calc(var(--animation-intensity) * 0.8);
+  }
+  100% {
+    transform: translateY(-100vh) translateX(calc(var(--drift-x, 0) * 1px)) scale(0.5);
+    opacity: 0;
+  }
+}
+
+@keyframes particle-drift {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(calc(var(--drift-amount, 20) * 1px));
+  }
+}
+
+/**
+ * Creature-Specific Effect Animations
+ * 
+ * Each creature has unique visual effects that match their folklore theme:
+ * 
+ * rune-glow: Baba Yaga's neon-glowing runes (Requirement 5.1)
+ * - Pulsing opacity and brightness for mystical glow effect
+ * - Controlled by --glow-intensity variable
+ * 
+ * echo-wave: Banshee's echo-wave animations (Requirement 5.2)
+ * - Expanding/contracting scale with fading opacity
+ * - Creates ripple effect for sorrowful wails
+ * 
+ * flicker: Aswang's flickering lantern light (Requirement 5.3)
+ * - Irregular opacity changes simulate candle flicker
+ * - Multiple keyframes create unpredictable pattern
+ */
+@keyframes rune-glow {
+  0%, 100% {
+    opacity: calc(var(--glow-intensity) * 0.6);
+    filter: brightness(1);
+  }
+  50% {
+    opacity: calc(var(--glow-intensity) * 1);
+    filter: brightness(1.3);
+  }
+}
+
+@keyframes echo-wave {
+  0% {
+    transform: scale(0.8);
+    opacity: calc(var(--glow-intensity) * 0.8);
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: calc(var(--glow-intensity) * 0.4);
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: calc(var(--glow-intensity) * 0.8);
+  }
+}
+
+@keyframes flicker {
+  0%, 100% {
+    opacity: calc(var(--glow-intensity) * 0.9);
+  }
+  25% {
+    opacity: calc(var(--glow-intensity) * 0.4);
+  }
+  50% {
+    opacity: calc(var(--glow-intensity) * 1);
+  }
+  75% {
+    opacity: calc(var(--glow-intensity) * 0.6);
+  }
+}
+
+/**
+ * Game State Intensity Animations
+ * 
+ * These animations activate during tense/critical game states (Requirements 11.2, 11.3):
+ * 
+ * screen-tilt: Subtle rotation for disorientation effect
+ * - Applied during tense/critical states
+ * - Creates psychological tension without disrupting gameplay
+ * 
+ * vignette-pulse: Darkening edges of screen
+ * - Pulsing opacity draws focus to center
+ * - Intensity controlled by --vignette-intensity variable
+ * - Only active during critical game moments
+ */
+@keyframes screen-tilt {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(0.5deg);
+  }
+}
+
+@keyframes vignette-pulse {
+  0%, 100% {
+    opacity: var(--vignette-intensity);
+  }
+  50% {
+    opacity: calc(var(--vignette-intensity) * 1.2);
+  }
+}
+
+/* Focus styles for accessibility (Requirements 7.1) */
+*:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+  transition: outline-color var(--transition-state);
+}
+
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible {
+  outline: var(--focus-ring-width) solid var(--creature-primary);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/**
+ * Reduced Motion Support (Requirements 12.1-12.5)
+ * 
+ * Implements accessibility for users with motion sensitivity:
+ * 
+ * 1. System Preference Detection:
+ *    - Respects prefers-reduced-motion media query
+ *    - Automatically disables complex animations
+ * 
+ * 2. Manual Toggle:
+ *    - .reduced-motion-active class for user control
+ *    - Allows override of system preference
+ * 
+ * 3. Animation Handling:
+ *    - Reduces animation duration to near-instant (0.01ms)
+ *    - Prevents infinite loops (iteration-count: 1)
+ *    - Completely disables particle, fog, and parallax effects
+ * 
+ * 4. Core Functionality Preservation:
+ *    - Choice interactions remain functional
+ *    - Text and UI elements still visible
+ *    - Game logic unaffected
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Manual reduced motion toggle */
+body.reduced-motion-active *,
+body.reduced-motion-active *::before,
+body.reduced-motion-active *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* Disable complex animations when reduced motion is active */
+body.reduced-motion-active .particle,
+body.reduced-motion-active .fog-layer,
+body.reduced-motion-active .parallax-element {
+  animation: none !important;
+  transform: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .particle,
+  .fog-layer,
+  .parallax-element {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* App Component Styles */
+.app-loading {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: var(--color-text);
+}
+
+.app-error {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.app-error button {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  background: var(--creature-primary);
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.app-error button:hover {
+  transform: scale(1.05);
+}
+
+/* Gameplay Layout */
+.app--gameplay {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem 1rem;
+}
+
+/* Level Indicator */
+.level-indicator {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.5rem 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--creature-primary);
+  border-radius: 4px;
+  font-size: 0.875rem;
+  color: var(--color-text);
+  z-index: 100;
+}
+
+.level-text {
+  font-weight: bold;
+  color: var(--creature-primary);
+}
+
+/* Error Boundary Styles */
+.error-boundary {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 2rem;
+  text-align: center;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.error-boundary h1 {
+  font-size: 2rem;
+  color: #ff6b6b;
+  margin-bottom: 0.5rem;
+}
+
+.error-boundary p {
+  font-size: 1.125rem;
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+.error-boundary button {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  background: var(--creature-primary);
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+  font-weight: bold;
+}
+
+.error-boundary button:hover {
+  transform: scale(1.05);
+  background: var(--creature-secondary, #FF8C42);
+}
+
+.error-boundary button:active {
+  transform: scale(0.98);
+}
+
+/* Fog Layer Styles */
+.fog-layer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 0%, var(--creature-fog) 100%);
+  transition: opacity var(--transition-fog);
+}
+
+.fog-layer-1 {
+  animation: fog-drift-1 calc(20s / var(--animation-speed)) ease-in-out infinite;
+}
+
+.fog-layer-2 {
+  animation: fog-drift-2 calc(25s / var(--animation-speed)) ease-in-out infinite;
+  animation-delay: -5s;
+}
+
+.fog-layer-3 {
+  animation: fog-drift-3 calc(30s / var(--animation-speed)) ease-in-out infinite;
+  animation-delay: -10s;
+}
+
+/* Particle Styles */
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--creature-particle);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: particle-float calc(5s / var(--animation-speed)) linear infinite;
+  box-shadow: 0 0 8px var(--creature-particle);
+}
+
+.particle.rune-glow {
+  animation: particle-float calc(5s / var(--animation-speed)) linear infinite,
+             rune-glow calc(2s / var(--animation-speed)) ease-in-out infinite;
+}
+
+.particle.echo-wave {
+  animation: particle-float calc(5s / var(--animation-speed)) linear infinite,
+             echo-wave calc(3s / var(--animation-speed)) ease-in-out infinite;
+}
+
+.particle.flicker {
+  animation: particle-float calc(5s / var(--animation-speed)) linear infinite,
+             flicker calc(0.8s / var(--animation-speed)) ease-in-out infinite;
+}
+
+/* Vignette Effect */
+.vignette {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 30%, rgba(0, 0, 0, 0.8) 100%);
+  opacity: var(--vignette-intensity);
+  animation: vignette-pulse calc(4s / var(--animation-speed)) ease-in-out infinite;
+  transition: opacity var(--transition-state);
+  z-index: 50;
+}
+
+/* Screen Tilt Effect */
+.screen-tilt {
+  animation: screen-tilt calc(6s / var(--animation-speed)) ease-in-out infinite;
+}
+
+/* Text Contrast Utilities (Requirements 4.5) */
+.text-high-contrast {
+  color: var(--color-text);
+  text-shadow: var(--text-shadow-contrast);
+}
+
+.text-creature-themed {
+  color: var(--creature-primary);
+  text-shadow: 0 0 12px var(--creature-primary);
+}
+
+/* Smooth Transitions (Requirements 11.5) */
+.transition-state {
+  transition: all var(--transition-state);
+}
+
+.transition-scene {
+  transition: all var(--transition-scene);
+}
+
+.transition-choice {
+  transition: all var(--transition-choice);
+}
+
+/**
+ * Responsive Design - Mobile First Approach (Requirements 14.3, 14.4)
+ * 
+ * Progressive enhancement strategy:
+ * 1. Base styles optimized for mobile (320px+)
+ * 2. Breakpoints add enhancements for larger screens
+ * 3. Touch targets meet minimum 44x44px size
+ * 4. Particle count reduced on mobile for performance
+ * 5. Landscape orientation adjustments for better UX
+ * 
+ * Breakpoints:
+ * - 320px: Base mobile (default)
+ * - 576px: Landscape phones
+ * - 768px: Tablets
+ * - 992px: Desktops
+ * - 1200px: Large desktops
+ */
+
+/* Base styles (mobile) - 320px and up */
+body {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+h1 {
+  font-size: 1.75rem;
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: 1.5rem;
+  line-height: 1.3;
+}
+
+h3 {
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
+p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+button {
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  min-height: 44px; /* Touch target size */
+  min-width: 44px;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  body {
+    font-size: 17px;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  h2 {
+    font-size: 1.75rem;
+  }
+  
+  .app--gameplay {
+    padding: 1.5rem 1rem;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  body {
+    font-size: 18px;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+  }
+  
+  h2 {
+    font-size: 2rem;
+  }
+  
+  h3 {
+    font-size: 1.5rem;
+  }
+  
+  .app--gameplay {
+    padding: 2rem 1.5rem;
+  }
+  
+  button {
+    font-size: 1.125rem;
+    padding: 0.875rem 2rem;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  h1 {
+    font-size: 3rem;
+  }
+  
+  h2 {
+    font-size: 2.25rem;
+  }
+  
+  .app--gameplay {
+    padding: 2.5rem 2rem;
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  h1 {
+    font-size: 3.5rem;
+  }
+  
+  h2 {
+    font-size: 2.5rem;
+  }
+  
+  .app--gameplay {
+    padding: 3rem 2rem;
+  }
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 767px) {
+  .app--gameplay {
+    padding: 1rem 0.5rem;
+  }
+
+  .level-indicator {
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.75rem;
+  }
+  
+  /* Reduce particle count on mobile for performance */
+  .particle:nth-child(n+15) {
+    display: none;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (max-height: 600px) and (orientation: landscape) {
+  .app--gameplay {
+    padding: 0.5rem;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  h2 {
+    font-size: 1.25rem;
+  }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .text-high-contrast {
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+  }
+}
+
+/* Print styles */
+@media print {
+  .particle,
+  .fog-layer,
+  .vignette {
+    display: none;
+  }
+  
+  body {
+    background: white;
+    color: black;
+  }
+}
+
+/* ===== GAMEPLAY LAYOUT - Mobile-First 9:16 Design ===== */
+
+/* Main gameplay container - Full screen with proper layering */
+.app--gameplay {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Gameplay UI Container - Organized layout for all interactive elements */
+.gameplay-ui-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: none; /* Allow clicks through to background */
+  z-index: 100;
+}
+
+/* Re-enable pointer events for interactive elements */
+.gameplay-ui-container > * {
+  pointer-events: auto;
+}
+
+/* Level Indicator - Top right corner */
+.level-indicator {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  z-index: 150;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.level-text {
+  font-size: 0.9rem;
+  color: #f0f0f0;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* Mechanics Area - Middle section for creature-specific mechanics */
+.mechanics-area {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 600px;
+  margin: auto auto 0 auto; /* Push to bottom, center horizontally */
+  padding: 0 1rem 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 35vh; /* Limit height to prevent overlap */
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Custom scrollbar for better aesthetics */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.mechanics-area::-webkit-scrollbar {
+  width: 6px;
+}
+
+.mechanics-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.mechanics-area::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.mechanics-area::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .level-indicator {
+    top: 0.75rem;
+    right: 0.75rem;
+    padding: 0.4rem 0.8rem;
+  }
+  
+  .level-text {
+    font-size: 0.85rem;
+  }
+  
+  .mechanics-area {
+    padding: 0 0.75rem 0.5rem 0.75rem;
+    max-height: 30vh;
+  }
+}
+
+/* Landscape Orientation - Adjust for shorter screens */
+@media (max-height: 600px) and (orientation: landscape) {
+  .level-indicator {
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.3rem 0.6rem;
+  }
+  
+  .level-text {
+    font-size: 0.75rem;
+  }
+  
+  .mechanics-area {
+    max-height: 25vh;
+    padding: 0 0.5rem 0.5rem 0.5rem;
+  }
+}

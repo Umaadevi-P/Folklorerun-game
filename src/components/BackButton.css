@@ -1,0 +1,84 @@
+.back-button {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1000;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  color: #ffffff;
+  
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  
+  transition: all 200ms ease;
+}
+
+.back-button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: scale(1.05);
+}
+
+.back-button:active {
+  transform: scale(0.98);
+}
+
+.back-button:focus-visible {
+  outline: 2px solid #FFB84D;
+  outline-offset: 2px;
+}
+
+.back-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+  font-weight: 900;
+}
+
+/* Reduced motion styles */
+@media (prefers-reduced-motion: reduce) {
+  .back-button {
+    transition: none;
+  }
+  
+  .back-button:hover {
+    transform: none;
+  }
+  
+  .back-button:active {
+    transform: none;
+  }
+}
+
+body.reduced-motion-active .back-button:hover {
+  transform: none;
+}
+
+body.reduced-motion-active .back-button:active {
+  transform: none;
+}
+
+/* Mobile optimization */
+@media (max-width: 768px) {
+  .back-button {
+    top: 0.75rem;
+    left: 0.75rem;
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+  
+  .back-icon {
+    font-size: 1.15rem;
+  }
+}

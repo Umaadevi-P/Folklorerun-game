@@ -1,0 +1,457 @@
+/* CreatureSelection Component Styles */
+
+.creature-selection {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%);
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Atmospheric background effect */
+.creature-selection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(100, 100, 100, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+  animation: pulse-bg 8s ease-in-out infinite;
+}
+
+@keyframes pulse-bg {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+/* Requirement 2.1: Title in Playfair Display font */
+.selection-title {
+  font-family: var(--font-selection);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 3rem;
+  text-align: center;
+  color: #f0f0f0;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  z-index: 1;
+  max-width: 90%;
+  line-height: 1.3;
+}
+
+/* Requirement 2.1: Vertical carousel tuned for phone */
+.creature-carousel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 500px;
+  z-index: 1;
+  padding: 0 1rem;
+}
+
+/* Requirement 2.1: Large vertical tappable cards */
+.creature-card {
+  background: rgba(20, 20, 20, 0.9);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  min-height: 200px;
+  cursor: pointer;
+  transition: all 350ms cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+/* Requirement 2.2: Hover effects with glow and scale */
+.creature-card:hover,
+.creature-card:focus-visible {
+  transform: scale(1.03) translateY(-4px);
+  border-color: var(--fire-color, rgba(255, 255, 255, 0.4));
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    0 0 60px var(--fire-color, rgba(255, 255, 255, 0.3));
+}
+
+.creature-card.hovered {
+  transform: scale(1.03) translateY(-4px);
+  border-color: var(--fire-color, rgba(255, 255, 255, 0.4));
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    0 0 60px var(--fire-color, rgba(255, 255, 255, 0.3));
+}
+
+.creature-card-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Requirement 2.2: Creature name */
+.creature-name {
+  font-family: var(--font-selection);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #f0f0f0;
+  text-align: center;
+  margin: 0;
+  transition: all 300ms ease-out;
+}
+
+.creature-card:hover .creature-name,
+.creature-card.hovered .creature-name {
+  color: var(--fire-color, #ffffff);
+  text-shadow: 0 0 25px var(--fire-color, rgba(255, 255, 255, 0.6));
+}
+
+/* Requirement 2.2: Small description */
+.creature-description {
+  font-size: 1rem;
+  color: #c0c0c0;
+  text-align: center;
+  margin: 0;
+  font-style: italic;
+  line-height: 1.5;
+  transition: color 300ms ease-out;
+}
+
+.creature-card:hover .creature-description,
+.creature-card.hovered .creature-description {
+  color: #f0f0f0;
+}
+
+/* Requirement 2.2: Creature-specific fire colors */
+.creature-card[data-creature="baba-yaga"] {
+  --fire-color: #A67CFF;
+}
+
+.creature-card[data-creature="banshee"] {
+  --fire-color: #CFE8FF;
+}
+
+.creature-card[data-creature="aswang"] {
+  --fire-color: #E04B4B;
+}
+
+/* Requirement 2.2: Dynamic fire effects */
+.fire-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  opacity: 0.3;
+  transition: opacity 350ms ease-out;
+  z-index: 1;
+}
+
+.creature-card:hover .fire-overlay,
+.creature-card.hovered .fire-overlay {
+  opacity: 0.6;
+}
+
+/* Fire particles with creature-specific colors */
+.fire-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  animation: float-particle 3s ease-in-out infinite;
+  opacity: 0;
+}
+
+/* Creature-specific fire particle colors */
+.fire-overlay[data-creature="baba-yaga"] .fire-particle {
+  background: #A67CFF;
+  box-shadow: 0 0 10px #A67CFF;
+}
+
+.fire-overlay[data-creature="banshee"] .fire-particle {
+  background: #CFE8FF;
+  box-shadow: 0 0 10px #CFE8FF;
+}
+
+.fire-overlay[data-creature="aswang"] .fire-particle {
+  background: #E04B4B;
+  box-shadow: 0 0 10px #E04B4B;
+}
+
+.fire-particle:nth-child(1) {
+  left: 20%;
+  bottom: 0;
+  animation-delay: 0s;
+  animation-duration: 3.5s;
+}
+
+.fire-particle:nth-child(2) {
+  left: 40%;
+  bottom: 0;
+  animation-delay: 0.7s;
+  animation-duration: 4s;
+}
+
+.fire-particle:nth-child(3) {
+  left: 60%;
+  bottom: 0;
+  animation-delay: 1.4s;
+  animation-duration: 3.2s;
+}
+
+.fire-particle:nth-child(4) {
+  left: 80%;
+  bottom: 0;
+  animation-delay: 2.1s;
+  animation-duration: 3.8s;
+}
+
+.fire-particle:nth-child(5) {
+  left: 50%;
+  bottom: 0;
+  animation-delay: 2.8s;
+  animation-duration: 3.6s;
+}
+
+@keyframes float-particle {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-200px) translateX(calc(var(--drift, 0) * 20px));
+    opacity: 0;
+  }
+}
+
+.fire-particle:nth-child(1) { --drift: -1; }
+.fire-particle:nth-child(2) { --drift: 1; }
+.fire-particle:nth-child(3) { --drift: -0.5; }
+.fire-particle:nth-child(4) { --drift: 0.5; }
+.fire-particle:nth-child(5) { --drift: 0; }
+
+/* Fire icon with animated flames */
+.fire-icon {
+  width: 80px;
+  height: 80px;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.fire-icon .flame {
+  position: absolute;
+  bottom: 0;
+  width: 20px;
+  height: 40px;
+  border-radius: 50% 50% 0 0;
+  animation: flicker 2s ease-in-out infinite;
+  filter: blur(2px);
+}
+
+/* Creature-specific flame colors */
+.fire-icon[data-creature="baba-yaga"] .flame {
+  background: linear-gradient(to top, #A67CFF 0%, transparent 100%);
+}
+
+.fire-icon[data-creature="banshee"] .flame {
+  background: linear-gradient(to top, #CFE8FF 0%, transparent 100%);
+}
+
+.fire-icon[data-creature="aswang"] .flame {
+  background: linear-gradient(to top, #E04B4B 0%, transparent 100%);
+}
+
+.fire-icon .flame:nth-child(1) {
+  left: 50%;
+  transform: translateX(-50%);
+  animation-delay: 0s;
+}
+
+.fire-icon .flame:nth-child(2) {
+  left: 30%;
+  height: 30px;
+  width: 15px;
+  animation-delay: 0.3s;
+}
+
+.fire-icon .flame:nth-child(3) {
+  right: 30%;
+  height: 35px;
+  width: 18px;
+  animation-delay: 0.6s;
+}
+
+@keyframes flicker {
+  0%, 100% {
+    transform: translateY(0) scaleY(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(-5px) scaleY(1.1);
+    opacity: 1;
+  }
+}
+
+/* Keyboard focus styles - Keyboard navigation support */
+.creature-card:focus-visible {
+  outline: 3px solid var(--fire-color, #4A90E2);
+  outline-offset: 4px;
+}
+
+/* Responsive design for mobile-first 9:16 portrait */
+@media (max-width: 768px) {
+  .selection-title {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+  }
+  
+  .creature-carousel {
+    max-width: 100%;
+  }
+  
+  .creature-card {
+    padding: 2rem 1.5rem;
+    min-height: 180px;
+  }
+
+  .creature-name {
+    font-size: 1.8rem;
+  }
+
+  .creature-description {
+    font-size: 0.9rem;
+  }
+
+  .fire-icon {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+@media (min-width: 769px) {
+  /* Desktop: centered 9:16 canvas */
+  .creature-selection {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .creature-card,
+  .fire-overlay,
+  .creature-name,
+  .creature-description {
+    transition: none;
+  }
+  
+  .creature-card:hover,
+  .creature-card.hovered {
+    transform: scale(1.01);
+  }
+  
+  .fire-particle,
+  .flame {
+    animation: none;
+    opacity: 0;
+  }
+  
+  .creature-selection::before {
+    animation: none;
+  }
+}
+
+/* Manual reduced motion toggle */
+.creature-selection.reduced-motion .creature-card,
+.creature-selection.reduced-motion .fire-overlay,
+.creature-selection.reduced-motion .creature-name,
+.creature-selection.reduced-motion .creature-description {
+  transition: none;
+}
+
+.creature-selection.reduced-motion .creature-card:hover,
+.creature-selection.reduced-motion .creature-card.hovered {
+  transform: scale(1.01);
+}
+
+.creature-selection.reduced-motion .fire-particle,
+.creature-selection.reduced-motion .flame {
+  animation: none;
+  opacity: 0;
+}
+
+.creature-selection.reduced-motion::before {
+  animation: none;
+}
+
+/* Exit Button */
+.exit-button {
+  margin-top: 2rem;
+  padding: 1rem 2.5rem;
+  background: linear-gradient(135deg, rgba(60, 60, 60, 0.9), rgba(40, 40, 40, 0.9));
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  color: #f0f0f0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-family: 'Playfair Display', serif;
+  cursor: pointer;
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.4),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  z-index: 10;
+  position: relative;
+}
+
+.exit-button:hover,
+.exit-button:focus-visible {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, rgba(80, 80, 80, 0.95), rgba(60, 60, 60, 0.95));
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 
+    0 6px 20px rgba(0, 0, 0, 0.5),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+.exit-button:active {
+  transform: translateY(0);
+  box-shadow: 
+    0 2px 10px rgba(0, 0, 0, 0.4),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1);
+}
+
+.exit-button:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 4px;
+}
+
+@media (max-width: 768px) {
+  .exit-button {
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
+    margin-top: 1.5rem;
+  }
+}

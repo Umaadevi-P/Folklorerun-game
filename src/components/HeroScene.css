@@ -1,0 +1,624 @@
+/* HeroScene Component Styles - Mobile-First 9:16 Design */
+
+.hero-scene {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #000;
+  padding: 0;
+}
+
+/* Background Image Container - Requirement 4.1, 4.2 */
+.bg-image-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.bg-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(8px); /* 10% blur for better visibility */
+}
+
+/* Creature-specific light animations layer - Requirements 5.1, 5.2, 5.3 */
+.fog-layers {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Baba Yaga - Neon purple/pink lights animation */
+.hero-scene--baba-yaga .fog-layers {
+  background: 
+    radial-gradient(ellipse at 20% 30%, rgba(138, 43, 226, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(255, 20, 147, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(186, 85, 211, 0.1) 0%, transparent 60%);
+  animation: babaYagaLights 8s ease-in-out infinite;
+}
+
+@keyframes babaYagaLights {
+  0%, 100% {
+    opacity: 0.6;
+    filter: blur(40px);
+  }
+  50% {
+    opacity: 0.8;
+    filter: blur(50px);
+  }
+}
+
+/* Banshee - Ripple pale blue/cyan animation */
+.hero-scene--banshee .fog-layers {
+  background: 
+    radial-gradient(circle at 50% 50%, rgba(135, 206, 235, 0.2) 0%, transparent 40%),
+    radial-gradient(circle at 30% 60%, rgba(0, 255, 255, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 70% 40%, rgba(176, 224, 230, 0.15) 0%, transparent 50%);
+  animation: bansheeRipple 6s ease-in-out infinite;
+}
+
+@keyframes bansheeRipple {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+    filter: blur(40px);
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.7;
+    filter: blur(50px);
+  }
+}
+
+/* Aswang - Red/amber fire animation */
+.hero-scene--aswang .fog-layers {
+  background: 
+    radial-gradient(ellipse at 30% 70%, rgba(255, 69, 0, 0.2) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 30%, rgba(255, 140, 0, 0.18) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(220, 20, 60, 0.15) 0%, transparent 60%);
+  animation: aswangFire 4s ease-in-out infinite;
+}
+
+@keyframes aswangFire {
+  0%, 100% {
+    opacity: 0.6;
+    filter: blur(45px);
+  }
+  25% {
+    opacity: 0.8;
+    filter: blur(50px);
+  }
+  50% {
+    opacity: 0.7;
+    filter: blur(40px);
+  }
+  75% {
+    opacity: 0.85;
+    filter: blur(55px);
+  }
+}
+
+/* Baba Yaga - Neon-glowing runes and amber fog - Requirement 5.1 */
+.baba-yaga-effects {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.rune-glow {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--creature-primary) 0%,
+    transparent 70%
+  );
+  opacity: calc(var(--glow-intensity, 0.8) * var(--animation-intensity, 0.5));
+  animation: runeGlow calc(4s / var(--animation-speed, 1)) ease-in-out infinite;
+  box-shadow: 0 0 30px var(--creature-primary);
+}
+
+.rune-1 {
+  top: 15%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.rune-2 {
+  top: 25%;
+  right: 15%;
+  animation-delay: 1s;
+}
+
+.rune-3 {
+  bottom: 20%;
+  left: 20%;
+  animation-delay: 2s;
+}
+
+.rune-4 {
+  bottom: 30%;
+  right: 10%;
+  animation-delay: 3s;
+}
+
+@keyframes runeGlow {
+  0%, 100% {
+    opacity: calc(var(--glow-intensity, 0.8) * var(--animation-intensity, 0.5) * 0.5);
+    transform: scale(1);
+  }
+  50% {
+    opacity: calc(var(--glow-intensity, 0.8) * var(--animation-intensity, 0.5));
+    transform: scale(1.2);
+  }
+}
+
+/* Banshee - Echo-wave animations and pale blue mist - Requirement 5.2 */
+.banshee-effects {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.echo-wave {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border: 2px solid var(--creature-primary);
+  border-radius: 50%;
+  opacity: 0;
+  animation: echoWave calc(3s / var(--animation-speed, 1)) ease-out infinite;
+}
+
+.echo-wave-1 {
+  animation-delay: 0s;
+}
+
+.echo-wave-2 {
+  animation-delay: 1s;
+}
+
+.echo-wave-3 {
+  animation-delay: 2s;
+}
+
+@keyframes echoWave {
+  0% {
+    width: 100px;
+    height: 100px;
+    opacity: calc(var(--animation-intensity, 0.5) * 0.8);
+  }
+  100% {
+    width: 400px;
+    height: 400px;
+    opacity: 0;
+  }
+}
+
+/* Aswang - Flickering lantern light and red-tinted fog - Requirement 5.3 */
+.aswang-effects {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.lantern-flicker {
+  position: absolute;
+  width: 80px;
+  height: 120px;
+  background: radial-gradient(
+    ellipse at center,
+    var(--creature-primary) 0%,
+    var(--creature-secondary) 30%,
+    transparent 70%
+  );
+  opacity: calc(var(--glow-intensity, 0.9) * var(--animation-intensity, 0.5));
+  animation: lanternFlicker calc(2s / var(--animation-speed, 1)) ease-in-out infinite;
+  filter: blur(10px);
+}
+
+.lantern-1 {
+  top: 10%;
+  left: 15%;
+  animation-delay: 0s;
+}
+
+.lantern-2 {
+  top: 20%;
+  right: 20%;
+  animation-delay: 0.7s;
+}
+
+.lantern-3 {
+  bottom: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  animation-delay: 1.4s;
+}
+
+@keyframes lanternFlicker {
+  0%, 100% {
+    opacity: calc(var(--glow-intensity, 0.9) * var(--animation-intensity, 0.5) * 0.6);
+  }
+  10% {
+    opacity: calc(var(--glow-intensity, 0.9) * var(--animation-intensity, 0.5) * 0.3);
+  }
+  20% {
+    opacity: calc(var(--glow-intensity, 0.9) * var(--animation-intensity, 0.5) * 0.8);
+  }
+  30% {
+    opacity: calc(var(--glow-intensity, 0.9) * var(--animation-intensity, 0.5) * 0.4);
+  }
+  40%, 60% {
+    opacity: calc(var(--glow-intensity, 0.9) * var(--animation-intensity, 0.5));
+  }
+  70% {
+    opacity: calc(var(--glow-intensity, 0.9) * var(--animation-intensity, 0.5) * 0.5);
+  }
+  80% {
+    opacity: calc(var(--glow-intensity, 0.9) * var(--animation-intensity, 0.5) * 0.9);
+  }
+}
+
+/* Particle System - Requirement 5.4 */
+.particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--particle-color);
+  border-radius: 50%;
+  top: -10%;
+  opacity: 0;
+  animation: particleDrift linear infinite;
+}
+
+/* Particle type: rune-glow (Baba Yaga) */
+.particle--rune-glow {
+  background: radial-gradient(
+    circle,
+    var(--particle-color) 0%,
+    transparent 70%
+  );
+  box-shadow: 0 0 10px var(--particle-color);
+}
+
+/* Particle type: echo-wave (Banshee) */
+.particle--echo-wave {
+  background: radial-gradient(
+    circle,
+    var(--particle-color) 0%,
+    transparent 60%
+  );
+  opacity: 0;
+  animation: particleFade linear infinite;
+}
+
+/* Particle type: flicker (Aswang) */
+.particle--flicker {
+  background: var(--particle-color);
+  animation: particleFlickerDrift linear infinite;
+}
+
+@keyframes particleDrift {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: calc(var(--animation-intensity, 0.5) * 0.6);
+  }
+  90% {
+    opacity: calc(var(--animation-intensity, 0.5) * 0.3);
+  }
+  100% {
+    transform: translateY(110vh) translateX(calc((var(--drift-x, 0) - 0.5) * 100px));
+    opacity: 0;
+  }
+}
+
+@keyframes particleFade {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0;
+  }
+  10% {
+    opacity: calc(var(--animation-intensity, 0.5) * 0.5);
+  }
+  50% {
+    transform: translateY(55vh) translateX(calc((var(--drift-x, 0) - 0.5) * 80px)) scale(1.5);
+    opacity: calc(var(--animation-intensity, 0.5) * 0.4);
+  }
+  90% {
+    opacity: calc(var(--animation-intensity, 0.5) * 0.2);
+  }
+  100% {
+    transform: translateY(110vh) translateX(calc((var(--drift-x, 0) - 0.5) * 100px)) scale(0.5);
+    opacity: 0;
+  }
+}
+
+@keyframes particleFlickerDrift {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  5% {
+    opacity: calc(var(--animation-intensity, 0.5) * 0.8);
+  }
+  10% {
+    opacity: calc(var(--animation-intensity, 0.5) * 0.3);
+  }
+  15% {
+    opacity: calc(var(--animation-intensity, 0.5) * 0.7);
+  }
+  20%, 80% {
+    opacity: calc(var(--animation-intensity, 0.5) * 0.5);
+  }
+  85% {
+    opacity: calc(var(--animation-intensity, 0.5) * 0.2);
+  }
+  90% {
+    opacity: calc(var(--animation-intensity, 0.5) * 0.6);
+  }
+  95% {
+    opacity: calc(var(--animation-intensity, 0.5) * 0.1);
+  }
+  100% {
+    transform: translateY(110vh) translateX(calc((var(--drift-x, 0) - 0.5) * 100px));
+    opacity: 0;
+  }
+}
+
+/* Vignette overlay for critical state */
+.vignette-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at center,
+    transparent 30%,
+    rgba(0, 0, 0, var(--vignette-intensity, 0.6)) 100%
+  );
+  pointer-events: none;
+  z-index: 6;
+}
+
+/* Scene Content - Requirement 4.5 (proper contrast) - Positioned at top */
+.scene-content {
+  position: fixed;
+  top: 4rem; /* Below level indicator */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  max-width: 90%;
+  width: 100%;
+  padding: 0 1rem;
+}
+
+.scene-text-container {
+  background: rgba(10, 10, 10, 0.92);
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.9);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Requirement 4.5: Text with proper contrast (>= 4.5:1) */
+.scene-text {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #ffffff; /* High contrast against dark background */
+  font-family: 'Georgia', serif;
+  margin: 0;
+  text-align: center;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
+}
+
+/* Creature-specific text accents */
+.hero-scene--baba-yaga .scene-text-container {
+  border-color: rgba(166, 124, 255, 0.4);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(166, 124, 255, 0.3);
+}
+
+.hero-scene--banshee .scene-text-container {
+  border-color: rgba(207, 232, 255, 0.4);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(207, 232, 255, 0.3);
+}
+
+.hero-scene--banshee .scene-text {
+  font-size: 1.05rem;
+  letter-spacing: 0.03em;
+  line-height: 1.7;
+}
+
+.hero-scene--aswang .scene-text-container {
+  border-color: rgba(224, 75, 75, 0.4);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(224, 75, 75, 0.3);
+}
+
+.hero-scene--aswang .scene-text {
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+  line-height: 1.7;
+}
+
+/* Reduced Motion Support - Requirement 12.1, 12.2, 12.3 */
+.hero-scene.reduced-motion .fog-layers {
+  animation: none;
+  opacity: 0.3;
+}
+
+.hero-scene.reduced-motion .rune-glow {
+  animation: none;
+  opacity: calc(var(--glow-intensity, 0.8) * 0.4);
+}
+
+.hero-scene.reduced-motion .echo-wave {
+  animation: none;
+  opacity: 0;
+}
+
+.hero-scene.reduced-motion .lantern-flicker {
+  animation: none;
+  opacity: calc(var(--glow-intensity, 0.9) * 0.5);
+}
+
+.hero-scene.reduced-motion .particle {
+  display: none;
+}
+
+.hero-scene.reduced-motion .vignette-overlay {
+  opacity: 0.5;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .scene-content {
+    top: 3.5rem;
+    max-width: 95%;
+    padding: 0 0.75rem;
+  }
+
+  .scene-text-container {
+    padding: 0.9rem 1rem;
+  }
+
+  .scene-text {
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
+  .rune-glow {
+    width: 35px;
+    height: 35px;
+  }
+
+  .lantern-flicker {
+    width: 50px;
+    height: 75px;
+  }
+}
+
+@media (min-width: 769px) {
+  .scene-content {
+    top: 5rem;
+    max-width: 600px;
+  }
+  
+  .scene-text-container {
+    padding: 1.25rem 1.5rem;
+  }
+  
+  .scene-text {
+    font-size: 1rem;
+  }
+}
+
+/* Landscape orientation - Compact layout */
+@media (max-height: 600px) and (orientation: landscape) {
+  .scene-content {
+    top: 2.5rem;
+  }
+  
+  .scene-text-container {
+    padding: 0.75rem 1rem;
+  }
+  
+  .scene-text {
+    font-size: 0.85rem;
+    line-height: 1.3;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .scene-text {
+    color: #ffffff;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 1);
+  }
+
+  .scene-text-container {
+    background: rgba(0, 0, 0, 0.95);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+/* Prefers reduced motion media query */
+@media (prefers-reduced-motion: reduce) {
+  .fog-layers,
+  .rune-glow,
+  .echo-wave,
+  .lantern-flicker,
+  .particle {
+    animation: none !important;
+  }
+
+  .fog-layers {
+    opacity: 0.3;
+  }
+
+  .particle {
+    display: none;
+  }
+}

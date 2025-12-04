@@ -1,0 +1,455 @@
+/* Inventory Component - Mobile-First 9:16 Design */
+
+.inventory {
+  width: 100%;
+  margin: 0;
+  padding: 1rem;
+  background: rgba(10, 10, 10, 0.92);
+  border: 2px solid var(--creature-primary, rgba(255, 255, 255, 0.3));
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(20px);
+}
+
+.mechanic-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--creature-primary, #ffffff);
+  margin: 0 0 1rem 0;
+  text-shadow: 0 0 10px var(--creature-primary, #ffffff);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ===== Baba Yaga Riddle Interface ===== */
+.riddle-interface {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.riddle-header {
+  margin-bottom: 0.5rem;
+}
+
+.riddle-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.riddle-text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #f0f0f0;
+  font-style: italic;
+  padding: 1rem;
+  background: rgba(166, 124, 255, 0.15);
+  border-radius: 12px;
+  border-left: 4px solid var(--creature-primary, #A67CFF);
+  margin: 0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.riddle-form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.riddle-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid var(--creature-primary, #A67CFF);
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.riddle-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.riddle-input:focus {
+  outline: none;
+  border-color: var(--creature-secondary, #8B5FE6);
+  box-shadow: 0 0 15px rgba(166, 124, 255, 0.4);
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.riddle-submit {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, var(--creature-primary, #A67CFF), var(--creature-secondary, #8B5FE6));
+  border: none;
+  border-radius: 10px;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(166, 124, 255, 0.3);
+}
+
+.riddle-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(166, 124, 255, 0.5);
+}
+
+.riddle-submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.riddle-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.riddle-hint {
+  font-size: 0.9rem;
+  color: #ffd700;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 215, 0, 0.15);
+  border-radius: 10px;
+  border-left: 4px solid #ffd700;
+  animation: slideIn 0.3s ease-out;
+}
+
+.hint-label {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-right: 0.5rem;
+}
+
+.hints-counter {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.answer-feedback {
+  font-size: 0.95rem;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: 500;
+  animation: slideIn 0.2s ease-out;
+}
+
+.answer-feedback.correct {
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.15);
+  border: 2px solid #4ade80;
+}
+
+.answer-feedback.incorrect {
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.15);
+  border: 2px solid #f87171;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Banshee Calmness Meter ===== */
+.calmness-meter {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.calmness-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.mood-indicator {
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.mood-indicator.peaceful {
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.15);
+}
+
+.mood-indicator.sorrowful {
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.15);
+}
+
+.mood-indicator.anguished {
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.15);
+}
+
+.meter-container {
+  width: 100%;
+}
+
+.meter-background {
+  width: 100%;
+  height: 32px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid var(--creature-primary, #CFE8FF);
+  position: relative;
+}
+
+.meter-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--creature-primary, #CFE8FF), var(--creature-secondary, #A8D0F0));
+  transition: width 0.4s ease-out;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 0.5rem;
+}
+
+.meter-glow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4));
+  animation: meterGlow 2s ease-in-out infinite;
+}
+
+@keyframes meterGlow {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.meter-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.meter-label-min,
+.meter-label-max {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.8rem;
+}
+
+.meter-value {
+  color: var(--creature-primary, #CFE8FF);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.calmness-description {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  margin: 0;
+  font-style: italic;
+}
+
+/* ===== Aswang Token System ===== */
+.deduction-system {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.deduction-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.tokens-count {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--creature-primary, #E04B4B);
+  padding: 0.25rem 0.75rem;
+  background: rgba(224, 75, 75, 0.15);
+  border-radius: 12px;
+}
+
+.deduction-description {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  margin: 0 0 0.5rem 0;
+  font-style: italic;
+}
+
+.tokens-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.token-card {
+  padding: 0.75rem;
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  color: #f0f0f0;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+.token-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--creature-primary, #E04B4B);
+  box-shadow: 0 4px 12px rgba(224, 75, 75, 0.3);
+}
+
+.token-card.collected {
+  background: rgba(224, 75, 75, 0.2);
+  border-color: var(--creature-primary, #E04B4B);
+  color: #ffffff;
+}
+
+.token-icon {
+  font-size: 1.5rem;
+  text-align: center;
+  color: var(--creature-primary, #E04B4B);
+}
+
+.token-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.token-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0;
+  color: #ffffff;
+}
+
+.token-description {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+.combination-status {
+  font-size: 0.95rem;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: 500;
+  animation: slideIn 0.3s ease-out;
+}
+
+.combination-status.valid {
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.15);
+  border: 2px solid #4ade80;
+}
+
+.combination-status.invalid {
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.15);
+  border: 2px solid #fbbf24;
+}
+
+/* Mobile optimization */
+@media (max-width: 768px) {
+  .inventory {
+    padding: 0.9rem;
+  }
+  
+  .mechanic-title {
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .riddle-text {
+    font-size: 0.9rem;
+    padding: 0.9rem;
+  }
+  
+  .riddle-input {
+    padding: 0.7rem 0.9rem;
+    font-size: 0.9rem;
+  }
+  
+  .riddle-submit {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.85rem;
+  }
+  
+  .tokens-grid {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+  
+  .token-card {
+    padding: 0.9rem;
+  }
+  
+  .meter-background {
+    height: 28px;
+  }
+}
+
+/* Landscape orientation - Compact layout */
+@media (max-height: 600px) and (orientation: landscape) {
+  .inventory {
+    padding: 0.75rem;
+  }
+  
+  .mechanic-title {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .riddle-text,
+  .calmness-description,
+  .deduction-description {
+    font-size: 0.85rem;
+    padding: 0.75rem;
+  }
+  
+  .tokens-grid {
+    gap: 0.5rem;
+  }
+  
+  .token-card {
+    padding: 0.6rem;
+  }
+}

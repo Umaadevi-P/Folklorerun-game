@@ -1,0 +1,541 @@
+/* GoodbyeScreen - Halloween Farewell */
+
+.goodbye-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  padding: 2rem;
+  z-index: 2000;
+}
+
+/* Fire effects container - floating particles */
+.goodbye-screen .fire-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Individual fire particles - small floating embers */
+.goodbye-screen .fire-effect {
+  width: 8px;
+  height: 8px;
+  position: absolute;
+  border-radius: 50%;
+  animation: floatUp 4s ease-in infinite;
+  opacity: 0;
+}
+
+.goodbye-screen .purple-fire {
+  background: radial-gradient(circle, #A67CFF 0%, transparent 70%);
+  box-shadow: 0 0 20px #A67CFF;
+  left: 20%;
+  animation-delay: 0s;
+}
+
+.goodbye-screen .blue-fire {
+  background: radial-gradient(circle, #CFE8FF 0%, transparent 70%);
+  box-shadow: 0 0 20px #CFE8FF;
+  left: 50%;
+  animation-delay: 1.3s;
+}
+
+.goodbye-screen .red-fire {
+  background: radial-gradient(circle, #E04B4B 0%, transparent 70%);
+  box-shadow: 0 0 20px #E04B4B;
+  left: 80%;
+  animation-delay: 2.6s;
+}
+
+/* Create multiple particles using pseudo-elements */
+.goodbye-screen .fire-effect::before,
+.goodbye-screen .fire-effect::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: inherit;
+  box-shadow: inherit;
+}
+
+.goodbye-screen .fire-effect::before {
+  left: -100px;
+  animation: floatUp 5s ease-in infinite;
+  animation-delay: 0.5s;
+}
+
+.goodbye-screen .fire-effect::after {
+  left: 100px;
+  animation: floatUp 4.5s ease-in infinite;
+  animation-delay: 1s;
+}
+
+@keyframes floatUp {
+  0% {
+    bottom: -10%;
+    opacity: 0;
+    transform: translateX(0) scale(1);
+  }
+  10% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(calc(var(--drift, 0) * 30px)) scale(1.2);
+  }
+  90% {
+    opacity: 0.5;
+  }
+  100% {
+    bottom: 110%;
+    opacity: 0;
+    transform: translateX(calc(var(--drift, 0) * 60px)) scale(0.5);
+  }
+}
+
+.goodbye-content {
+  text-align: center;
+  z-index: 10;
+  max-width: 600px;
+  position: relative;
+}
+
+.goodbye-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #FF8C00;
+  margin-bottom: 1rem;
+  text-shadow: 
+    0 0 20px rgba(255, 140, 0, 0.6),
+    0 0 40px rgba(255, 140, 0, 0.4);
+  animation: title-glow 2s ease-in-out infinite;
+}
+
+@keyframes title-glow {
+  0%, 100% {
+    text-shadow: 
+      0 0 20px rgba(255, 140, 0, 0.6),
+      0 0 40px rgba(255, 140, 0, 0.4);
+  }
+  50% {
+    text-shadow: 
+      0 0 30px rgba(255, 140, 0, 0.8),
+      0 0 60px rgba(255, 140, 0, 0.6);
+  }
+}
+
+.goodbye-subtitle {
+  font-size: 1.2rem;
+  color: #c0c0c0;
+  margin-bottom: 3rem;
+  font-style: italic;
+}
+
+/* Pumpkin Container */
+.pumpkin-container {
+  position: relative;
+  width: 220px;
+  height: 240px;
+  margin: 0 auto 2rem;
+}
+
+.pumpkin {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.2s ease-out;
+}
+
+.pumpkin-container.happy .happy-pumpkin {
+  opacity: 1;
+  z-index: 2;
+}
+
+.pumpkin-container.happy .horror-pumpkin {
+  opacity: 0;
+  z-index: 1;
+}
+
+.pumpkin-container.horror .happy-pumpkin {
+  opacity: 0;
+  z-index: 1;
+}
+
+.pumpkin-container.horror .horror-pumpkin {
+  opacity: 1;
+  z-index: 2;
+  animation: glitch-horror 0.4s ease-out;
+}
+
+@keyframes glitch-horror {
+  0% { 
+    transform: translateX(-50%) translate(0, 0);
+    filter: hue-rotate(0deg);
+  }
+  10% { 
+    transform: translateX(-50%) translate(-8px, 3px);
+    filter: hue-rotate(90deg);
+  }
+  20% { 
+    transform: translateX(-50%) translate(8px, -3px);
+    filter: hue-rotate(-90deg);
+  }
+  30% { 
+    transform: translateX(-50%) translate(-5px, -5px);
+    filter: hue-rotate(45deg);
+  }
+  40% { 
+    transform: translateX(-50%) translate(5px, 5px);
+    filter: hue-rotate(-45deg);
+  }
+  50% { 
+    transform: translateX(-50%) translate(-3px, 2px);
+    filter: hue-rotate(0deg);
+  }
+  60% { 
+    transform: translateX(-50%) translate(3px, -2px);
+  }
+  100% { 
+    transform: translateX(-50%) translate(0, 0);
+    filter: hue-rotate(0deg);
+  }
+}
+
+/* Pumpkin Stem */
+.pumpkin-stem {
+  width: 24px;
+  height: 35px;
+  background: linear-gradient(to bottom, #8B4513 0%, #654321 100%);
+  border-radius: 6px 6px 0 0;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 
+    inset -3px -3px 8px rgba(0, 0, 0, 0.4),
+    inset 2px 2px 6px rgba(139, 69, 19, 0.6);
+}
+
+.pumpkin-stem.horror {
+  background: linear-gradient(to bottom, #2a2a2a 0%, #1a1a1a 100%);
+  box-shadow: 
+    inset -3px -3px 8px rgba(0, 0, 0, 0.8),
+    0 0 15px rgba(139, 0, 0, 0.5);
+}
+
+/* Pumpkin Body */
+.pumpkin-body {
+  width: 180px;
+  height: 180px;
+  background: linear-gradient(135deg, #FF8C00 0%, #FF6B00 50%, #FF8C00 100%);
+  border-radius: 50%;
+  position: relative;
+  margin: 30px auto 0;
+  box-shadow: 
+    0 15px 50px rgba(255, 140, 0, 0.5),
+    inset -15px -15px 40px rgba(0, 0, 0, 0.3),
+    inset 15px 15px 40px rgba(255, 200, 100, 0.4);
+  animation: pumpkin-glow 3s ease-in-out infinite;
+}
+
+@keyframes pumpkin-glow {
+  0%, 100% {
+    box-shadow: 
+      0 15px 50px rgba(255, 140, 0, 0.5),
+      inset -15px -15px 40px rgba(0, 0, 0, 0.3),
+      inset 15px 15px 40px rgba(255, 200, 100, 0.4);
+  }
+  50% {
+    box-shadow: 
+      0 15px 60px rgba(255, 140, 0, 0.7),
+      inset -15px -15px 40px rgba(0, 0, 0, 0.3),
+      inset 15px 15px 40px rgba(255, 200, 100, 0.5);
+  }
+}
+
+.pumpkin-body.horror {
+  background: linear-gradient(135deg, #8B0000 0%, #4B0000 50%, #8B0000 100%);
+  box-shadow: 
+    0 15px 60px rgba(139, 0, 0, 0.8),
+    inset -15px -15px 40px rgba(0, 0, 0, 0.7),
+    inset 15px 15px 40px rgba(139, 0, 0, 0.4);
+  animation: horror-pulse 0.5s ease-in-out infinite;
+}
+
+@keyframes horror-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+/* Cute Closed Round Eyes */
+.pumpkin-eye.closed {
+  position: absolute;
+  top: 55px;
+  width: 30px;
+  height: 8px;
+  background: #000;
+  border-radius: 50%;
+}
+
+.pumpkin-eye.left.closed {
+  left: 40px;
+}
+
+.pumpkin-eye.right.closed {
+  right: 40px;
+}
+
+/* Horror Eyes - Wide and scary */
+.pumpkin-eye.horror-eye {
+  position: absolute;
+  top: 50px;
+  width: 35px;
+  height: 45px;
+  background: #000;
+  clip-path: polygon(50% 0%, 100% 40%, 80% 100%, 20% 100%, 0% 40%);
+}
+
+.pumpkin-eye.left.horror-eye {
+  left: 35px;
+}
+
+.pumpkin-eye.right.horror-eye {
+  right: 35px;
+}
+
+.pumpkin-eye.horror-eye::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  background: #FF0000;
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.9);
+  animation: evil-glow 0.8s ease-in-out infinite;
+}
+
+@keyframes evil-glow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.9);
+    opacity: 1;
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(255, 0, 0, 1);
+    opacity: 0.8;
+  }
+}
+
+/* Cute Smile */
+.pumpkin-mouth.cute-smile {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 35px;
+  border: 5px solid #000;
+  border-top: none;
+  border-radius: 0 0 70px 70px;
+  background: transparent;
+}
+
+/* Horror Mouth - Jagged and scary */
+.pumpkin-mouth.horror-mouth {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 55px;
+  background: #000;
+  border-radius: 10px;
+  box-shadow: 
+    inset 0 5px 15px rgba(255, 0, 0, 0.5),
+    0 0 20px rgba(139, 0, 0, 0.6);
+}
+
+.teeth-row {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.sharp-tooth {
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 18px solid #FFF;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+  animation: tooth-shake 0.3s ease-in-out infinite;
+}
+
+.sharp-tooth:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.sharp-tooth:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.sharp-tooth:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.sharp-tooth:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+@keyframes tooth-shake {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+.goodbye-message {
+  font-size: 1.1rem;
+  color: #888;
+  font-style: italic;
+  animation: fade-pulse 3s ease-in-out infinite;
+}
+
+@keyframes fade-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .goodbye-title {
+    font-size: 2rem;
+  }
+
+  .goodbye-subtitle {
+    font-size: 1rem;
+  }
+
+  .pumpkin-container {
+    width: 170px;
+    height: 190px;
+  }
+
+  .pumpkin-stem {
+    width: 18px;
+    height: 28px;
+  }
+
+  .pumpkin-body {
+    width: 140px;
+    height: 140px;
+    margin-top: 25px;
+  }
+
+  .pumpkin-eye.closed {
+    width: 24px;
+    height: 6px;
+    top: 42px;
+  }
+
+  .pumpkin-eye.left.closed {
+    left: 30px;
+  }
+
+  .pumpkin-eye.right.closed {
+    right: 30px;
+  }
+
+  .pumpkin-eye.horror-eye {
+    width: 28px;
+    height: 36px;
+    top: 38px;
+  }
+
+  .pumpkin-eye.left.horror-eye {
+    left: 28px;
+  }
+
+  .pumpkin-eye.right.horror-eye {
+    right: 28px;
+  }
+
+  .pumpkin-mouth.cute-smile {
+    width: 55px;
+    height: 28px;
+    bottom: 38px;
+    border-width: 4px;
+  }
+
+  .pumpkin-mouth.horror-mouth {
+    width: 80px;
+    height: 45px;
+    bottom: 32px;
+  }
+
+  .sharp-tooth {
+    border-left-width: 6px;
+    border-right-width: 6px;
+    border-top-width: 14px;
+  }
+
+  .teeth-row {
+    gap: 6px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .goodbye-screen .fire-effect,
+  .goodbye-screen .fire-effect::before,
+  .goodbye-screen .fire-effect::after {
+    animation: none;
+    opacity: 0.3;
+  }
+
+  .pumpkin-container.horror .horror-pumpkin {
+    animation: none;
+  }
+
+  .pumpkin-body,
+  .pumpkin-body.horror {
+    animation: none;
+  }
+
+  .pumpkin-eye.horror-eye::after {
+    animation: none;
+  }
+
+  .sharp-tooth {
+    animation: none;
+  }
+}
