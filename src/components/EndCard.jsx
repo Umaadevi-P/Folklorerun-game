@@ -73,7 +73,7 @@ const EndCard = ({
     }
     // Use base creature image for all other cases
     const creatureNameMap = {
-      'baba-yaga': 'Baba yaga',
+      'baba-yaga': 'Baba Yaga',
       'banshee': 'Banshee',
       'aswang': 'Aswang'
     };
@@ -201,3 +201,4 @@ const EndCard = ({
 };
 
 export default EndCard;
+
