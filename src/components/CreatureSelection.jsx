@@ -99,7 +99,7 @@ const CreatureSelection = ({ gameData, onSelectCreature, onExit, reducedMotion =
     <div className={`creature-selection ${reducedMotion ? 'reduced-motion' : ''}`}>
       {/* Background audio - Requirement 10.1 */}
       <audio ref={audioRef} loop>
-        <source src="/assets/Background audio.mp3" type="audio/mpeg" />
+        <source src={`${import.meta.env.BASE_URL}assets/Background audio.mp3`} type="audio/mpeg" />
       </audio>
 
       {/* Requirement 2.1: Title in Playfair Display font */}
@@ -162,3 +162,4 @@ const CreatureSelection = ({ gameData, onSelectCreature, onExit, reducedMotion =
 };
 
 export default CreatureSelection;
+
