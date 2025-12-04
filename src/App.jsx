@@ -365,7 +365,7 @@ function App() {
           <div 
             className="story-background"
             style={{
-              backgroundImage: `url(/assets/${encodeURIComponent(gameEngine.selectedCreature.name)}.jpg)`,
+              backgroundImage: `url(${import.meta.env.BASE_URL}assets/${encodeURIComponent(gameEngine.selectedCreature.name)}.jpg)`,
               filter: reducedMotion ? 'blur(8px)' : 'blur(8px)',
               position: 'fixed',
               top: 0,
@@ -481,3 +481,4 @@ function App() {
 }
 
 export default App;
+
