@@ -67,7 +67,7 @@ Even with a fantasy/horror theme, the design stays friendly and simple for users
 
 ## **🛠 Tech Stack**
 
-* **Frontend:** React + Vite
+* **Frontend:** JS + Vite
 * **Styles:** Tailwind CSS
 * **State Management:** React Hooks
 * **AI Logic:** Custom classifier with weighted probability
