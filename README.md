@@ -4,7 +4,7 @@ FOLKLORERUN is a spooky, creature-driven interactive game where you face three l
 
 This project was built using Kiro’s full development workflow: spec-driven development, vibe coding, property-based testing, accessibility checks, and automated hooks.
 
-_Live Demo_: https://umaadevi-p.github.io/Folklorerun-game/
+_Live Demo_: https://umaadevi-p.github.io/Folklorerun-game/ (**PLEASE VIEW IN DEV MODE - Phone size**)
 
 
 ---
